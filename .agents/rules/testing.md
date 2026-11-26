@@ -10,7 +10,7 @@ description: "Règles d'écriture, harnais et répartition CI des tests dans Eva
 - Ne créer ni TU isolé, ni doublon d'un comportement déjà vérifié, ni nouveau harnais : réutiliser les fixtures, le serveur et les transports fictifs existants.
 - Préserver les contrôles de sécurité, cryptographie, intégrité et architecture ; avant toute suppression, exécuter le scénario de remplacement.
 - Pour une correction, ajouter l'assertion manquante au parcours existant avant de modifier le code produit.
-- Conserver un résultat reproductible (commande, scénario, résultat, artefact dans `reports/`) et ne jamais désactiver un test avec `skip`.
+- Conserver un résultat reproductible (commande, scénario, résultat, artefact dans `reports/`) et ne jamais désactiver un test avec `skip`, sauf `tests/test_private_comparison.py`, qui saute localement quand Pi et Node sont absents (la CI installe Pi).
 
 | Preuve | Harnais existant |
 |---|---|

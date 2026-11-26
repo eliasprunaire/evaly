@@ -18,7 +18,7 @@ Evaly aide à choisir un modèle pour une tâche précise à partir de preuves l
 
 ## Écrire des tests
 
-Appliquer les règles détaillées dans [`.agents/rules/testing.md`](.agents/rules/testing.md) : étendre les parcours E2E existants sans TU redondants ni nouveau harnais, et ne jamais désactiver un test avec `skip`. Le navigateur de test passe par le serveur Node de fixture existant, jamais par `benchmark_web/server.py`.
+Appliquer les règles détaillées dans [`.agents/rules/testing.md`](.agents/rules/testing.md) : étendre les parcours E2E existants sans TU redondants ni nouveau harnais, et ne jamais désactiver un test avec `skip`, sauf l'exception locale nommée dans `testing.md` (`tests/test_private_comparison.py`, Pi et Node absents). Le navigateur de test passe par le serveur Node de fixture existant, jamais par `benchmark_web/server.py`.
 
 ## Validation
 
