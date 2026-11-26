@@ -2,118 +2,29 @@ Ce codebase est le vôtre : à vous de décider à quoi il sert et comment il es
 
 # Instructions pour les agents
 
-## Mission
+## Mission et sources faisant autorité
 
-Evaly aide à choisir un modèle pour une tâche précise à partir de preuves lisibles. Le verdict porte sur la configuration observée sous des conditions communes, jamais sur le nom du modèle seul.
+Evaly aide à choisir un modèle pour une tâche précise à partir de preuves lisibles (configuration observée sous des conditions communes, jamais le nom du modèle seul). Les documents ci-dessous font foi chacun dans leur domaine :
 
-Le périmètre, l'architecture, le backlog et les campagnes suivent les décisions explicites du décideur. Les documents de la section Sources ne portent aucun statut de livraison. Le README, les releases GitHub et les artefacts de release portent les faits opérationnels.
+- `GLOSSARY.md` (vocabulaire), `docs/roadmap.md` (jalons), `docs/task-template.md` (contrat minimal d'une future tâche de benchmark), `DESIGN.md` (langage visuel web, à lire avant tout travail UI).
+- Le `README`, les releases GitHub et leurs artefacts portent les faits opérationnels ; la demande courante prévaut et tout conflit doit être signalé.
+- Ne jamais créer de copie, variante datée ou dossier d'archives, ni requalifier les campagnes et prototypes historiques pour les faire coller à la spécification courante.
 
-## Sources faisant autorité
+## Autorité, sécurité et GitHub
 
-Lire les documents utiles avant de modifier leur domaine :
-
-- `GLOSSARY.md` pour le vocabulaire
-- `docs/roadmap.md` pour les jalons nommés
-- `docs/task-template.md` pour le contrat minimal d'une future tâche
-- `DESIGN.md` pour le langage visuel du parcours web : lis DESIGN.md avant tout travail UI
-
-Ces chemins sont uniques. Ne jamais créer de copie, variante datée ou dossier d'archives. Git porte l'historique. Une Issue, une PR, un ancien résultat ou une branche ne remplace pas la spécification courante.
-
-La demande actuelle prévaut sur ce fichier. Signaler un conflit au lieu d'inventer une synthèse.
-
-## Manière de travailler
-
-- comprendre le flux concerné avant d'écrire
-- viser le plus petit changement qui satisfait la demande
-- réutiliser l'existant avant d'ajouter une abstraction ou une dépendance
-- préserver les changements non liés, notamment ceux déjà présents dans le worktree
-- ne pas transformer une découverte adjacente en nouvelle tâche
-- ne pas fabriquer de mesure, de preuve, d'état ou d'autorité absente
-- séparer clairement fait établi, déduction et hypothèse lorsque cette distinction change une décision
-- ne jamais requalifier les campagnes et prototypes historiques à partir de la spécification courante. Requalifier veut dire réécrire le verdict, le nom ou le statut d'une campagne ou d'un prototype déjà enregistré pour le faire coller à la spécification courante.
-
-## Autorité et sécurité
-
-Une approbation documentaire n'autorise ni appel modèle, ni retry, ni dépense, ni campagne, ni publication, ni déploiement. Intégration Git, exécution produit, appels modèle et budget, provisionnement et publication gardent des autorités distinctes. Lancer le serveur ou les tests en local n'est pas une action sur un système externe.
-
-Demander une autorisation explicite avant toute opération Git destructive, fusion, suppression de branche, fermeture de PR ou d'Issue, release, appel modèle ou action sur un système externe. Un appel modèle exige cette autorisation, qu'il soit facturé ou non. Ne jamais exposer de secret. Les données et sorties réelles restent privées tant qu'une publication n'est pas autorisée.
-
-### Flux Git
-
-Travailler sur une branche typée, feat, fix, docs, chore ou refactor, jamais sur main ni master. Un commit local sur cette branche ne demande pas d'autorisation. Push, PR et fusion en demandent une, une fois, pour l'action nommée.
-
-## GitHub
-
-GitHub Issues porte les tâches, dépendances, décisions et preuves. Le champ `Status` du [Project #5](https://github.com/users/eliasprunaire/projects/5) porte l'état de travail. Aucun backlog local ne le duplique.
-
-Le compte rendu de livraison dit la commande et le résultat. L'artefact sous reports/ est local et ignoré par Git. La preuve qui ferme une Issue est celle écrite dans l'Issue.
-
-Créer ou redécouper les Issues seulement après décision explicite. Vérifier le parent courant avant toute création ; ne pas rattacher une nouvelle livraison à une initiative historique par défaut. Ne pas redécouper les anciennes cartes pour fabriquer le nouveau backlog. Utiliser les relations natives `Parent issue` et `Sub-issues progress` pour Initiative, Epic et Story.
-
-Une Issue se ferme avec sa preuve de résultat ou une décision explicite de remplacement. Distinguer l’état ouvert ou fermé de l’Issue, le champ `Status` du Project et le progrès de ses sous-Issues. Aucun ne prouve l’état d’exécution d’une campagne. `docs/task-template.md` décrit une tâche de benchmark, pas une Story de livraison.
+- Travailler sur une branche typée (`feat`, `fix`, `docs`, `chore`, `refactor`), jamais sur `main` ni `master` ; préserver les changements non liés du worktree.
+- Exiger une autorisation explicite avant : opération Git destructive, fusion, push/PR, suppression de branche, fermeture d'Issue/PR, release, appel modèle (facturé ou non), campagne, publication ou action externe. Ne jamais exposer de secret.
+- GitHub Issues et le champ `Status` du [Project #5](https://github.com/users/eliasprunaire/projects/5) portent l'état de travail (relations natives `Parent issue` et `Sub-issues progress` ; aucune création/clôture sans preuve ou décision explicite). L'artefact sous `reports/` est local et ignoré par Git.
 
 ## Écrire des tests
 
-- Étendre d’abord un parcours E2E existant pour vérifier le comportement demandé depuis une entrée publique.
-- Rechercher les scénarios et assertions existants avant d’ajouter un test. Compléter le scénario responsable du comportement.
-- Ne créer aucun TU isolé ni doublon d’un comportement déjà vérifié, sauf exception explicitement demandée.
-- Ne pas renommer un TU, entourer son appel d’un serveur ou recopier ses mocks pour le présenter comme E2E.
-- Ne créer aucun nouveau harnais. Réutiliser les fixtures, le serveur et les transports fictifs existants.
-- Préserver les contrôles existants de sécurité, d’intégrité, de cryptographie et d’architecture.
-- Avant une suppression, relier chaque comportement et cas limite à son scénario de remplacement. Exécuter ce scénario avant de supprimer.
-- Pour une correction, ajouter l’assertion manquante au parcours existant avant de modifier le code produit.
-- Conserver un résultat reproductible : commande, scénario, résultat et artefact dans `reports/`. Ne jamais remplacer une preuve par une déclaration.
-- Exécuter chaque test une seule fois dans les quatre étapes de CI. Vérifier leur union et l’absence de doublon après modification.
-
-Choisir le harnais selon la preuve nécessaire :
-
-| Preuve | Harnais existant |
-|---|---|
-| Parcours complet, HTTP réel, exécuteur, stockage et résultat observable | `tests/test_parcours_complet.py` |
-| Statuts, en-têtes, routage et négociation du vrai serveur HTTP | `tests/test_web_access.py` |
-| Frontière moteur/présentation et projections | `tests/test_web_boundary.py` |
-| DOM, JavaScript, accessibilité, CSP et affichage mobile dans Chromium | `tests/privacy_browser.test.cjs` |
-
-Le navigateur reçoit le HTML produit par `views.render` derrière le serveur Node de fixture existant.
-Il ne contacte pas `benchmark_web/server.py`. Conserver les preuves HTTP distinctes lorsque le comportement dépend du serveur réel.
-Ne remplacer aucun de ces contrôles par une inspection manuelle.
+Appliquer les règles détaillées dans [`.agents/rules/testing.md`](.agents/rules/testing.md) : étendre les parcours E2E existants sans TU redondants ni nouveau harnais, et ne jamais désactiver un test avec `skip`. Le navigateur de test passe par le serveur Node de fixture existant, jamais par `benchmark_web/server.py`.
 
 ## Validation
 
-Exécuter d’abord les tests pertinents existants.
-Avant de livrer un changement de comportement ou de répartition des tests, exécuter les quatre étapes de `.github/workflows/ci.yml`.
-Une étape « Vérifier statiquement Python et JavaScript » précède ces quatre étapes. La liste de ce fichier n'est pas exhaustive : `.github/workflows/ci.yml` fait foi.
-Ce workflow porte les commandes et versions de référence. `CONTRIBUTING.md` décrit l’installation locale de Pi.
+Exécuter les tests pertinents puis les quatre étapes de [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (précédées de la vérification statique Python/JS et incluant la double construction reproductible). Gotcha local : sans `BENCHMARK_TEST_CI_SPLIT=1`, la découverte Python locale inclut aussi `tests.test_private_comparison`, `tests.test_provider_crypto` et `tests.test_privacy`. Pour la documentation, vérifier les liens, les chemins canoniques et l'absence de source concurrente sans recopier les commandes de CI. Voir aussi [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-| Étape | Répartition |
-|---|---|
-| Harnais Pi sans appel modèle | `tests.test_private_comparison` |
-| Suite Python générale | Découverte Python hors des trois modules dédiés |
-| Runtime cryptographique | `tests.test_provider_crypto` et `tests.test_privacy` |
-| Navigateur | `tests/privacy_browser.test.cjs` |
+## Livraison, arrêt et revue
 
-Les trois modules dédiés, `tests.test_private_comparison`, `tests.test_provider_crypto` et `tests.test_privacy`, utilisent le protocole standard `load_tests` pour sortir uniquement de la découverte répartie en CI.
-Sans `BENCHMARK_TEST_CI_SPLIT=1`, la découverte locale inclut tous les tests Python.
-Le chargement explicite d’un module reste complet, même avec cette variable.
-Ne désactiver aucun test avec `skip` pour réduire la durée ou le nombre d’exécutions.
-
-La CI construit aussi deux fois le runtime du commit vérifié et contrôle sa reproductibilité.
-Conserver ce contrôle en CI. Distinguer le résultat Linux de la CI et le résultat navigateur. Ne pas présenter un résultat local macOS comme un résultat de CI.
-Ne lancer aucun appel modèle pour compenser une preuve absente.
-
-Pour un changement documentaire, vérifier les liens, les chemins canoniques et l’absence de source concurrente.
-Ne recopier les commandes de CI ni dans les directives, ni dans une Issue ou une PR.
-
-## Livraison et arrêt
-
-Avant de conclure, fournir :
-
-- les fichiers modifiés ou supprimés
-- les validations exécutées et leur résultat
-- les limites ou décisions encore ouvertes
-
-S'arrêter dès que le résultat autorisé est prouvé. Si une information ou une autorité indispensable manque, rester en `HOLD` sans fallback implicite. S'arrêter, écrire ce qui manque, et ne pas continuer par un autre chemin.
-
-## Règles de revue
-
-Signaler comme bloquant toute nouvelle autorité documentaire concurrente, requalification de campagnes ou prototypes historiques, architecture présentée comme construite sans preuve ou choix d'architecture sans autorité, secret versionné ou contournement d'une preuve requise. Ne pas reformater une ligne hors du changement demandé.
+- Conclure avec les fichiers modifiés/supprimés, les validations exécutées et les limites ouvertes ; s'arrêter en `HOLD` sans fallback implicite si une autorité ou preuve manque.
+- En revue, bloquer toute autorité documentaire concurrente, requalification historique, architecture affirmée sans preuve, secret versionné ou contournement de preuve.
